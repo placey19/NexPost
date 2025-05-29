@@ -859,7 +859,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3522,7 +3522,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5493,7 +5493,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6541,7 +6541,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1491103069}
   - component: {fileID: 1491103068}
-  - component: {fileID: 1491103067}
   - component: {fileID: 1491103066}
   - component: {fileID: 1491103065}
   - component: {fileID: 1491103064}
@@ -6605,7 +6604,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6627,36 +6626,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1491103067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491103063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Shape:
-    rid: 6031199885362463033
-  m_ShapeRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_UnmodifiedMeshVersion: 3718
-  m_Size: {x: 180, y: 10, z: 180}
-  m_LocalCenter: {x: 0, y: 0, z: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: 6031199885362463033
-      type: {class: Torus, ns: UnityEngine.ProBuilder.Shapes, asm: Unity.ProBuilder}
-      data:
-        m_Rows: 32
-        m_Columns: 64
-        m_TubeRadius: 5
-        m_HorizontalCircumference: 360
-        m_VerticalCircumference: 360
-        m_Smooth: 1
 --- !u!114 &1491103068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76759,7 +76728,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -77702,7 +77671,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79513,7 +79482,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81133,7 +81102,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6db53a4a43412ae43835e3d0bb59e91a, type: 2}
+  - {fileID: 2100000, guid: 57cb3f16c6f4cc2478baf1e8fff098f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
