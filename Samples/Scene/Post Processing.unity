@@ -184,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 1328465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: 20}
+  m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1594,7 +1594,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Color Fade
+  m_text: Fade To Color
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2748,7 +2748,7 @@ Transform:
   m_GameObject: {fileID: 585225861}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30, y: 0, z: 20}
+  m_LocalPosition: {x: 15, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3651,7 +3651,7 @@ Transform:
   m_GameObject: {fileID: 915981606}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30, y: 0, z: 5}
+  m_LocalPosition: {x: 30, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7307,7 +7307,7 @@ GameObject:
   - component: {fileID: 1754488245}
   - component: {fileID: 1754488244}
   m_Layer: 0
-  m_Name: Color Fade
+  m_Name: Fade To Color
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7360,7 +7360,7 @@ Transform:
   m_GameObject: {fileID: 1754488243}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 20}
+  m_LocalPosition: {x: -30, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8817,10 +8817,10 @@ SceneRoots:
   - {fileID: 264250114}
   - {fileID: 1925940843}
   - {fileID: 1304339711}
-  - {fileID: 1754488246}
   - {fileID: 1328468}
   - {fileID: 585225864}
   - {fileID: 915981609}
+  - {fileID: 1754488246}
   - {fileID: 92516174}
   - {fileID: 1335735676}
   - {fileID: 473697239}
