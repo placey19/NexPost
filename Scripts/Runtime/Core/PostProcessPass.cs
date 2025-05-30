@@ -8,21 +8,20 @@ namespace Nexcide.PostProcessing {
     public class PostProcessPass : ScriptableRenderPass {
 
         private readonly VolumeEffect _effect;
-        private RTHandle _colorCopy;                // The handle to the temporary color copy texture (only used in the non-render graph path)
         private readonly int _shaderPass;
-        private readonly Material _material;
+        private Material _material;
+        private RTHandle _colorCopy;                // The handle to the temporary color copy texture (only used in the non-render graph path)
 
         private static readonly int s_BlitTexture = Shader.PropertyToID("_BlitTexture");
         private static readonly int s_BlitScaleBias = Shader.PropertyToID("_BlitScaleBias");
         private static readonly MaterialPropertyBlock s_SharedPropertyBlock = new();
 
-        public PostProcessPass(RenderPassEvent when, VolumeEffect effect, Material material, int shaderPass = 0) {
-            renderPassEvent = when;
+        public PostProcessPass(RenderPassEvent when, VolumeEffect effect, int shaderPass = 0) {
             _effect = effect;
-            _material = material;
             _shaderPass = shaderPass;
 
             profilingSampler = new ProfilingSampler(_effect.ShaderName);
+            renderPassEvent = when;
         }
 
         public bool IsEffectActive() {
@@ -76,6 +75,17 @@ namespace Nexcide.PostProcessing {
 
         // This method contains the shared rendering logic for doing the main post-processing pass (used by both the non-render graph and render graph paths)
         private void ExecuteMainPass(RasterCommandBuffer cmd, RTHandle sourceTexture) {
+            if (_material == null) {
+                Shader shader = Shader.Find(_effect.ShaderName);
+
+                if (shader != null) {
+                    _material = new(shader);
+                } else {
+                    Log.e($"Couldn't find shader: {_effect.ShaderName}");
+                    return;
+                }
+            }
+
             VolumeStack volumeStack = VolumeManager.instance?.stack;
 
             s_SharedPropertyBlock.Clear();

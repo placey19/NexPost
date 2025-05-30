@@ -64,20 +64,12 @@ namespace Nexcide.PostProcessing {
                 int count = 0;
                 if (volumeEffects != null) {
                     foreach (VolumeEffect volumeEffect in volumeEffects) {
-                        Shader shader = Shader.Find(volumeEffect.ShaderName);
-
-                        if (shader != null) {
-                            Material material = new(shader);
-
-                            for (int i = 0; i < volumeEffect.Passes; ++i) {
-                                PostProcessPass pass = new(When, volumeEffect, material, i);
-                                _passes.Add(pass);
-                            }
-
-                            Log.v(LogLevel, this, $"Created: {volumeEffect.ShaderName}");
-                        } else {
-                            Log.e(LogLevel, this, $"Couldn't find shader: {volumeEffect.ShaderName}");
+                        for (int i = 0; i < volumeEffect.Passes; ++i) {
+                            PostProcessPass pass = new(When, volumeEffect, i);
+                            _passes.Add(pass);
                         }
+
+                        Log.v(LogLevel, this, $"Created: {volumeEffect.ShaderName}");
                     }
 
                     count = volumeEffects.Count;
