@@ -1,13 +1,12 @@
-﻿Shader "Nexcide/Barebones_Vert"
-{
-    SubShader
-    {
+﻿Shader "Nexcide/Barebones_Vert" {
+
+    SubShader {
+
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" }
 
         ZTest Never ZWrite Off Cull Off
 
-        Pass
-        {
+        Pass {
             HLSLPROGRAM
 
             #pragma vertex Vert
@@ -17,21 +16,18 @@
 
             TEXTURE2D_X(_BlitTexture);
 
-            struct Attributes
-            {
+            struct Attributes {
                 uint vertexID : SV_VertexID;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct Varyings
-            {
+            struct Varyings {
                 float4 positionCS : SV_POSITION;
                 float2 texcoord   : TEXCOORD0;
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            Varyings Vert(Attributes input)
-            {
+            Varyings Vert(Attributes input) {
                 Varyings output;
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
@@ -45,8 +41,7 @@
                 return output;
             }
 
-            half4 Frag(Varyings input) : SV_Target
-            {
+            half4 Frag(Varyings input) : SV_Target {
                 float2 uv = input.texcoord;
                 float4 col = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, uv);
                 return dot(col.rgb, float3(0.2126729, 0.7151522, 0.072175));

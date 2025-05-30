@@ -8,25 +8,24 @@ namespace Nexcide.PostProcessing {
     public class PostProcessPass : ScriptableRenderPass {
 
         private readonly VolumeEffect _effect;
-        private RTHandle _colorCopy;        // The handle to the temporary color copy texture (only used in the non-render graph path)
+        private RTHandle _colorCopy;                // The handle to the temporary color copy texture (only used in the non-render graph path)
+        private readonly int _shaderPass;
 
-        private static readonly int _blitTexture = Shader.PropertyToID("_BlitTexture");
-        private static readonly int _blitScaleBias = Shader.PropertyToID("_BlitScaleBias");
+        private static readonly int s_BlitTexture = Shader.PropertyToID("_BlitTexture");
+        private static readonly int s_BlitScaleBias = Shader.PropertyToID("_BlitScaleBias");
+        private static readonly MaterialPropertyBlock s_SharedPropertyBlock = new();
 
-        public PostProcessPass(VolumeEffect effect) {
+        public PostProcessPass(RenderPassEvent when, VolumeEffect effect, int shaderPass = 0) {
+            renderPassEvent = when;
             _effect = effect;
+            _shaderPass = shaderPass;
 
-            profilingSampler = new ProfilingSampler(_effect.ShaderName);
-            requiresIntermediateTexture = true;     // intend to sample the active color buffer
+            string name = _effect.ShaderName.Replace('/', '.');
+            profilingSampler = new ProfilingSampler(name);
         }
 
         public bool IsEffectActive() {
             return _effect.ConfigureMaterial(VolumeManager.instance?.stack, out _);
-        }
-
-        // This method contains the shared rendering logic for doing the temporary color copy pass (used by both the non-render graph and render graph paths)
-        private void ExecuteCopyColorPass(RasterCommandBuffer cmd, RTHandle sourceTexture) {
-            Blitter.BlitTexture(cmd, sourceTexture, new Vector4(1, 1, 0, 0), 0.0f, false);
         }
 
         // This method is used to get the descriptor used for creating the temporary color copy texture that will enable the main pass to sample the screen color
@@ -63,7 +62,7 @@ namespace Nexcide.PostProcessing {
                 ref CameraData cameraData = ref renderingData.cameraData;
 
                 CoreUtils.SetRenderTarget(cmd, _colorCopy);
-                ExecuteCopyColorPass(rasterCmd, cameraData.renderer.cameraColorTargetHandle);
+                Blitter.BlitTexture(rasterCmd, cameraData.renderer.cameraColorTargetHandle, new Vector4(1, 1, 0, 0), 0.0f, false);
 
                 CoreUtils.SetRenderTarget(cmd, cameraData.renderer.cameraColorTargetHandle);
                 ExecuteMainPass(rasterCmd, sourceTexture: _colorCopy);
@@ -79,14 +78,31 @@ namespace Nexcide.PostProcessing {
             VolumeStack volumeStack = VolumeManager.instance?.stack;
 
             if (volumeStack != null && _effect.ConfigureMaterial(volumeStack, out Material material)) {
-                if (sourceTexture != null) {
-                    material.SetTexture(_blitTexture, sourceTexture);
+                // special condition for GaussianBlur, for some reason a MaterialPropertyBlock needs to be used for the 2nd pass to work
+                if (_effect is GaussianBlurEffect blurEffect) {
+                    s_SharedPropertyBlock.Clear();
+
+                    blurEffect.ConfigureBlock(volumeStack, s_SharedPropertyBlock, material);
+
+                    if (sourceTexture != null) {
+                        s_SharedPropertyBlock.SetTexture(s_BlitTexture, sourceTexture);
+                    }
+
+                    // Set the scale and bias so shaders that use Blit.hlsl work correctly
+                    s_SharedPropertyBlock.SetVector(s_BlitScaleBias, new Vector4(1, 1, 0, 0));
+
+                    // Draw to the current render target.
+                    cmd.DrawProcedural(Matrix4x4.identity, material, _shaderPass, MeshTopology.Triangles, 3, 1, s_SharedPropertyBlock);
+                } else {
+                    if (sourceTexture != null) {
+                        material.SetTexture(s_BlitTexture, sourceTexture);
+                    }
+
+                    // This uniform needs to be set for user materials with shaders relying on core Blit.hlsl to work as expected
+                    material.SetVector(s_BlitScaleBias, new Vector4(1, 1, 0, 0));
+
+                    cmd.DrawProcedural(Matrix4x4.identity, material, _shaderPass, MeshTopology.Triangles, 3, 1);
                 }
-
-                // This uniform needs to be set for user materials with shaders relying on core Blit.hlsl to work as expected
-                material.SetVector(_blitScaleBias, new Vector4(1, 1, 0, 0));
-
-                cmd.DrawProcedural(Matrix4x4.identity, material, 0, MeshTopology.Triangles, 3, 1);
             }
         }
 
@@ -106,7 +122,7 @@ namespace Nexcide.PostProcessing {
                 // the cameraColor to another (temp) resource so that the next pass uses the temp resource. We don't need the copy anymore. However, this only works if you are
                 // writing to every pixel of the frame, a partial write will need the copy first to add to the existing content. See FullScreenPassRendererFeature.cs for an example. 
                 TextureDesc cameraColorDesc = renderGraph.GetTextureDesc(resourcesData.cameraColor);
-                cameraColorDesc.name = "_CameraColorCustomPostProcessing";
+                cameraColorDesc.name = "_NexcidePostProcessing";
                 cameraColorDesc.clearBuffer = false;
 
                 TextureHandle destination = renderGraph.CreateTexture(cameraColorDesc);
@@ -119,7 +135,8 @@ namespace Nexcide.PostProcessing {
                 builder.SetRenderAttachment(destination, 0, AccessFlags.Write);
 
                 builder.SetRenderFunc((MainPassData data, RasterGraphContext context) => {
-                    ExecuteMainPass(context.cmd, data.inputTexture.IsValid() ? data.inputTexture : null);
+                    RTHandle sourceTexture = (data.inputTexture.IsValid() ? data.inputTexture : null);
+                    ExecuteMainPass(context.cmd, sourceTexture);
                 });
 
                 // Swap cameraColor to the new temp resource (destination) for the next pass
