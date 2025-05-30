@@ -20,8 +20,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _amount = Shader.PropertyToID("_Amount");
         private static readonly int _color = Shader.PropertyToID("_Color");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out ColorFade component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out ColorFade component);
 
             if (active) {
                 material.SetFloat(_amount, component.Amount.value);

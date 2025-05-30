@@ -10,22 +10,23 @@ namespace Nexcide.PostProcessing {
         private readonly VolumeEffect _effect;
         private RTHandle _colorCopy;                // The handle to the temporary color copy texture (only used in the non-render graph path)
         private readonly int _shaderPass;
+        private readonly Material _material;
 
         private static readonly int s_BlitTexture = Shader.PropertyToID("_BlitTexture");
         private static readonly int s_BlitScaleBias = Shader.PropertyToID("_BlitScaleBias");
         private static readonly MaterialPropertyBlock s_SharedPropertyBlock = new();
 
-        public PostProcessPass(RenderPassEvent when, VolumeEffect effect, int shaderPass = 0) {
+        public PostProcessPass(RenderPassEvent when, VolumeEffect effect, Material material, int shaderPass = 0) {
             renderPassEvent = when;
             _effect = effect;
+            _material = material;
             _shaderPass = shaderPass;
 
-            string name = _effect.ShaderName.Replace('/', '.');
-            profilingSampler = new ProfilingSampler(name);
+            profilingSampler = new ProfilingSampler(_effect.ShaderName);
         }
 
         public bool IsEffectActive() {
-            return _effect.ConfigureMaterial(VolumeManager.instance?.stack, out _);
+            return _effect.ConfigureMaterial(VolumeManager.instance?.stack, s_SharedPropertyBlock);
         }
 
         // This method is used to get the descriptor used for creating the temporary color copy texture that will enable the main pass to sample the screen color
@@ -77,32 +78,18 @@ namespace Nexcide.PostProcessing {
         private void ExecuteMainPass(RasterCommandBuffer cmd, RTHandle sourceTexture) {
             VolumeStack volumeStack = VolumeManager.instance?.stack;
 
-            if (volumeStack != null && _effect.ConfigureMaterial(volumeStack, out Material material)) {
-                // special condition for GaussianBlur, for some reason a MaterialPropertyBlock needs to be used for the 2nd pass to work
-                if (_effect is GaussianBlurEffect blurEffect) {
-                    s_SharedPropertyBlock.Clear();
+            s_SharedPropertyBlock.Clear();
 
-                    blurEffect.ConfigureBlock(volumeStack, s_SharedPropertyBlock, material);
-
-                    if (sourceTexture != null) {
-                        s_SharedPropertyBlock.SetTexture(s_BlitTexture, sourceTexture);
-                    }
-
-                    // Set the scale and bias so shaders that use Blit.hlsl work correctly
-                    s_SharedPropertyBlock.SetVector(s_BlitScaleBias, new Vector4(1, 1, 0, 0));
-
-                    // Draw to the current render target.
-                    cmd.DrawProcedural(Matrix4x4.identity, material, _shaderPass, MeshTopology.Triangles, 3, 1, s_SharedPropertyBlock);
-                } else {
-                    if (sourceTexture != null) {
-                        material.SetTexture(s_BlitTexture, sourceTexture);
-                    }
-
-                    // This uniform needs to be set for user materials with shaders relying on core Blit.hlsl to work as expected
-                    material.SetVector(s_BlitScaleBias, new Vector4(1, 1, 0, 0));
-
-                    cmd.DrawProcedural(Matrix4x4.identity, material, _shaderPass, MeshTopology.Triangles, 3, 1);
+            if (volumeStack != null && _effect.ConfigureMaterial(volumeStack, s_SharedPropertyBlock)) {
+                if (sourceTexture != null) {
+                    s_SharedPropertyBlock.SetTexture(s_BlitTexture, sourceTexture);
                 }
+
+                // Set the scale and bias so shaders that use Blit.hlsl work correctly
+                s_SharedPropertyBlock.SetVector(s_BlitScaleBias, new Vector4(1, 1, 0, 0));
+
+                // Draw to the current render target.
+                cmd.DrawProcedural(Matrix4x4.identity, _material, _shaderPass, MeshTopology.Triangles, 3, 1, s_SharedPropertyBlock);
             }
         }
 

@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _normalThreshold = Shader.PropertyToID("_NormalThreshold");
         private static readonly int _lineThickness = Shader.PropertyToID("_LineThickness");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out FullscreenOutlines component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out FullscreenOutlines component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

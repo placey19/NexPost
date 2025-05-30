@@ -20,8 +20,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _pixelSize = Shader.PropertyToID("_PixelSize");
         private static readonly int _tint = Shader.PropertyToID("_Tint");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Pixelate component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Pixelate component);
 
             if (active) {
                 material.SetFloat(_pixelSize, component.PixelSize.value);

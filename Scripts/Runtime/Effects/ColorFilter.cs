@@ -18,8 +18,8 @@ namespace Nexcide.PostProcessing {
 
         private static readonly int _color = Shader.PropertyToID("_Color");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out ColorFilter component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out ColorFilter component);
 
             if (active) {
                 material.SetColor(_color, component.Color.value);

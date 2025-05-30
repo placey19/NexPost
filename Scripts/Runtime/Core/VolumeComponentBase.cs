@@ -12,32 +12,13 @@ namespace Nexcide.PostProcessing {
 
     public abstract class VolumeEffect {
 
-        private Material _material;
-
         public abstract string ShaderName { get; }
 
-        public abstract bool ConfigureMaterial(VolumeStack volumeStack, out Material material);
+        public abstract bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material);
 
-        protected bool ComponentActive<T>(VolumeStack volumeStack, out T component, out Material material) where T : VolumeComponentBase {
-            material = null;
+        protected bool ComponentActive<T>(VolumeStack volumeStack, out T component) where T : VolumeComponentBase {
             component = volumeStack.GetComponent<T>();
-            return (component.IsActive() && GetMaterial(out material));
-        }
-
-        private bool GetMaterial(out Material material) {
-            if (_material == null) {
-                Shader shader = Shader.Find(ShaderName);
-
-                if (shader != null) {
-                    _material = new Material(shader);
-                } else {
-                    Log.e($"Couldn't find shader: {ShaderName}");
-                }
-            }
-
-            material = _material;
-
-            return (material != null);
+            return component.IsActive();
         }
     }
 }

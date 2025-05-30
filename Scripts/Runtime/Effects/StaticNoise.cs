@@ -36,8 +36,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _linesSpeed = Shader.PropertyToID("_Lines_Speed");
         private static readonly int _linesHz = Shader.PropertyToID("_Lines_Hz");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out StaticNoise component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out StaticNoise component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

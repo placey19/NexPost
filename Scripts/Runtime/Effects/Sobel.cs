@@ -20,8 +20,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _blend = Shader.PropertyToID("_Blend");
         private static readonly int _clamp01 = Shader.PropertyToID("_Clamp01");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Sobel component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Sobel component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

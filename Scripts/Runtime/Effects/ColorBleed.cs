@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _maxAmount = Shader.PropertyToID("_MaxAmount");
         private static readonly int _chromaticAberration = Shader.PropertyToID("_ChromaticAberration");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out ColorBleed component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out ColorBleed component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _min = Shader.PropertyToID("_Min");
         private static readonly int _max = Shader.PropertyToID("_Max");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Depth component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Depth component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

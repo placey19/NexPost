@@ -64,18 +64,26 @@ namespace Nexcide.PostProcessing {
                 int count = 0;
                 if (volumeEffects != null) {
                     foreach (VolumeEffect volumeEffect in volumeEffects) {
-                        // temp - Gaussian blur requires 2 passes
-                        if (volumeEffect is GaussianBlurEffect) {
-                            PostProcessPass pass0 = new(When, volumeEffect, 0);
-                            PostProcessPass pass1 = new(When, volumeEffect, 1);
-                            _passes.Add(pass0);
-                            _passes.Add(pass1);
-                        } else {
-                            PostProcessPass pass = new(When, volumeEffect, 0);
-                            _passes.Add(pass);
-                        }
+                        Shader shader = Shader.Find(volumeEffect.ShaderName);
 
-                        Log.v(LogLevel, this, $"Created: {volumeEffect.ShaderName}");
+                        if (shader != null) {
+                            Material material = new(shader);
+
+                            // temp - Gaussian blur requires 2 passes
+                            if (volumeEffect is GaussianBlurEffect) {
+                                PostProcessPass pass0 = new(When, volumeEffect, material, 0);
+                                PostProcessPass pass1 = new(When, volumeEffect, material, 1);
+                                _passes.Add(pass0);
+                                _passes.Add(pass1);
+                            } else {
+                                PostProcessPass pass = new(When, volumeEffect, material, 0);
+                                _passes.Add(pass);
+                            }
+
+                            Log.v(LogLevel, this, $"Created: {volumeEffect.ShaderName}");
+                        } else {
+                            Log.e(LogLevel, this, $"Couldn't find shader: {volumeEffect.ShaderName}");
+                        }
                     }
 
                     count = volumeEffects.Count;

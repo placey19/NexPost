@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _maxDistance = Shader.PropertyToID("_MaxDistance");
         private static readonly int _depthStep = Shader.PropertyToID("_DepthStep");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out PixelateDepth component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out PixelateDepth component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

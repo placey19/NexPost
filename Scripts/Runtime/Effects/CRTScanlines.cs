@@ -22,8 +22,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _scale = Shader.PropertyToID("_Scale");
         private static readonly int _colorBleed = Shader.PropertyToID("_ColorBleed");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out CRTScanlines component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out CRTScanlines component);
 
             if (active) {
                 material.SetFloat(_opacity, component.Opacity.value);

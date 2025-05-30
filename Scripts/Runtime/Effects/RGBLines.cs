@@ -28,8 +28,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _blur = Shader.PropertyToID("_Blur");
         private static readonly int _speed = Shader.PropertyToID("_Speed");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out RGBLines component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out RGBLines component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

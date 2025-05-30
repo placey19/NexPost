@@ -20,8 +20,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _spread = Shader.PropertyToID("_Spread");
         private static readonly int _gridSize = Shader.PropertyToID("_GridSize");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out GaussianBlur component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out GaussianBlur component);
 
             if (active) {
                 material.SetFloat(_spread, Mathf.Max(component.Spread.value, 0.01f));
@@ -29,12 +29,6 @@ namespace Nexcide.PostProcessing {
             }
 
             return active;
-        }
-
-        // temp
-        public void ConfigureBlock(VolumeStack volumeStack, MaterialPropertyBlock block, Material material) {
-            block.SetFloat(_spread, material.GetFloat(_spread));
-            block.SetInteger(_gridSize, material.GetInteger(_gridSize));
         }
     }
 }

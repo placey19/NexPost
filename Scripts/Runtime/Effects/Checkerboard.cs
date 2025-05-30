@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _color2 = Shader.PropertyToID("_Color2");
         private static readonly int _offset = Shader.PropertyToID("_Offset");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Checkerboard component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Checkerboard component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

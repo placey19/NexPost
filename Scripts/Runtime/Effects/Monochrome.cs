@@ -22,8 +22,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _invertColors = Shader.PropertyToID("_InvertColors");
         private static readonly int _edge = Shader.PropertyToID("_Edge");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Monochrome component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Monochrome component);
 
             if (active) {
                 material.SetFloat(_blend, component.Blend.value);

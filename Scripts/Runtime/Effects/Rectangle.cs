@@ -26,8 +26,8 @@ namespace Nexcide.PostProcessing {
         private static readonly int _height = Shader.PropertyToID("_Height");
         private static readonly int _edgeRadius = Shader.PropertyToID("_EdgeRadius");
 
-        public override bool ConfigureMaterial(VolumeStack volumeStack, out Material material) {
-            bool active = ComponentActive(volumeStack, out Rectangle component, out material);
+        public override bool ConfigureMaterial(VolumeStack volumeStack, MaterialPropertyBlock material) {
+            bool active = ComponentActive(volumeStack, out Rectangle component);
 
             if (active) {
                 material.SetFloat(_opacity, component.Opacity.value);
