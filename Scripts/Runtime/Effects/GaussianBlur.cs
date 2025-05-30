@@ -17,6 +17,8 @@ namespace Nexcide.PostProcessing {
 
         public override string ShaderName => "Nexcide/Gaussian Blur";
 
+        public override int Passes => 2;
+
         private static readonly int _spread = Shader.PropertyToID("_Spread");
         private static readonly int _gridSize = Shader.PropertyToID("_GridSize");
 

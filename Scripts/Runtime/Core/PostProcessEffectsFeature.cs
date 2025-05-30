@@ -69,14 +69,8 @@ namespace Nexcide.PostProcessing {
                         if (shader != null) {
                             Material material = new(shader);
 
-                            // temp - Gaussian blur requires 2 passes
-                            if (volumeEffect is GaussianBlurEffect) {
-                                PostProcessPass pass0 = new(When, volumeEffect, material, 0);
-                                PostProcessPass pass1 = new(When, volumeEffect, material, 1);
-                                _passes.Add(pass0);
-                                _passes.Add(pass1);
-                            } else {
-                                PostProcessPass pass = new(When, volumeEffect, material, 0);
+                            for (int i = 0; i < volumeEffect.Passes; ++i) {
+                                PostProcessPass pass = new(When, volumeEffect, material, i);
                                 _passes.Add(pass);
                             }
 
