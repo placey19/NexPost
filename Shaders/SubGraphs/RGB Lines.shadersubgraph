@@ -2602,10 +2602,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 776.5,
-            "y": -511.25,
-            "width": 126.00000762939453,
-            "height": 118.00000762939453
+            "x": 748.800048828125,
+            "y": -427.20001220703127,
+            "width": 125.5999755859375,
+            "height": 117.60000610351563
         }
     },
     "m_Slots": [
@@ -3156,8 +3156,8 @@
     "m_ObjectId": "87f42edc47bd4badbe11915530257aaa",
     "m_Title": "RGB Split Noise",
     "m_Position": {
-        "x": -1594.4000244140625,
-        "y": -332.0000305175781
+        "x": -1594.400146484375,
+        "y": -332.0001220703125
     }
 }
 
@@ -3425,8 +3425,8 @@
     "m_ObjectId": "920c6b61761a4bc9a6bba69e3b3669ad",
     "m_Title": "RGB Pixel Texture",
     "m_Position": {
-        "x": 244.000244140625,
-        "y": -657.5999755859375
+        "x": 243.99998474121095,
+        "y": -657.6000366210938
     }
 }
 
@@ -5382,7 +5382,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": 913.5000610351563,
